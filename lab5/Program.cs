@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace lab5
 {
@@ -9,15 +9,21 @@ namespace lab5
         С
     }
 
+    public enum actions
+    {
+        add,
+        del,
+        upd
+    }
 
     public struct Item
     {
         public String Name;
-        public String Type;
+        public types Type;
         public int Age;
         public int Exp;
 
-        public Item(string Name, String Types, int Age, int Exp)
+        public Item(string Name, types Types, int Age, int Exp)
         {
             this.Name = Name;
             this.Type = Types;
@@ -31,19 +37,46 @@ namespace lab5
             Console.WriteLine($"|{this.Name,-24}|{this.Type,-12}|{this.Age,-20}|{this.Exp,-15}|");
         }
     }
+    public struct Action
+    {
+        public actions Act;
+        public string Name;
+        public DateTime Time;
+
+        public Action(actions act, string name, DateTime time)
+        {
+            this.Act = act;
+            this.Name = name;
+            this.Time = time;
+        }
+
+        public void Print()
+        {
+            //Console.WriteLine($"|{this.Act,-24}|{this.Name,-12}|{this.Time,-20}|");
+            if (Act == actions.add)
+            {
+                Console.WriteLine($"{this.Time} - Добавлена запись '{this.Name}' ");
+            }else if (Act == actions.del)
+            {
+                Console.WriteLine($"{this.Time} - Удалена запись '{this.Name}' ");
+            }else if (Act == actions.upd)
+            {
+                Console.WriteLine($"{this.Time} - Обновлена запись '{this.Name}' ");
+            }
+        }
+    }
 
     class program
     {
         private static void Main()
         {
-            ArrayList list = new();
-
+            List<Item> list = new List<Item>();
+            List<Action> list3 = new List<Action>();
 
             bool flag = true;
             while (flag)
             {
-                Console.WriteLine("Меню:");
-                //ControlLogs(50);
+                Console.WriteLine("Меню:");                
                 Console.WriteLine("1 – Просмотр таблицы\n2 – Добавить запись\n3 – Удалить запись\n4 – Обновить запись\n5 – Поиск записей\n6 – Просмотреть лог\n7 - Выход");
                 Console.WriteLine("Выберите действие:");
                 switch (Console.ReadLine().Trim())
@@ -68,8 +101,8 @@ namespace lab5
                         Console.WriteLine("ФИО:");
                         string Name = Console.ReadLine();
 
-                        Console.WriteLine("Тип деятельности: Т-тренер, С-спортсмен");
-                        string Types = Console.ReadLine();
+                        Console.WriteLine("Тип деятельности: Т-тренер - 0, С-спортсмен - 1");
+                        types Types = (types)int.Parse(Console.ReadLine());
 
                         Console.WriteLine("Введите год рождения:");
                         int Age = int.Parse(Console.ReadLine());
@@ -78,6 +111,11 @@ namespace lab5
                         int Exp = int.Parse(Console.ReadLine());
                         Item value = new(Name, Types, Age, Exp);
                         list.Add(value);
+                        DateTime time = DateTime.Now;
+                        string name = Name;
+                        actions act = actions.add;
+                        Action val = new(act, name, time);
+                        list3.Add(val);
                         break;
                     case "3":
                         Console.WriteLine("Введите номер записи которую хотите удалить:");
@@ -89,7 +127,12 @@ namespace lab5
                             Console.WriteLine("Введите номер записи которую хотите удалить:");
                             Console.WriteLine("Кол-во записей: " + list.Count);
                             num = int.Parse(Console.ReadLine());
-                        }
+                        }                      
+                        time = DateTime.Now;
+                        name = list[num - 1].Name;
+                        act = actions.del;
+                        val = new(act, name, time);
+                        list3.Add(val);
                         list.RemoveAt(num - 1);
                         break;
                     case "4":
@@ -103,13 +146,18 @@ namespace lab5
                             Console.WriteLine("Кол-во записей: " + list.Count);
                             num2 = int.Parse(Console.ReadLine());
                         }
+                        time = DateTime.Now;
+                        name = list[num2 - 1].Name;
+                        act = actions.upd;
+                        val = new(act, name, time);
+                        list3.Add(val);
                         Console.WriteLine("Введите данные:");
 
                         Console.WriteLine("ФИО:");
                         string Name2 = Console.ReadLine();
 
-                        Console.WriteLine("Тип деятельности: Т-тренер, С-спортсмен");
-                        string Types2 = Console.ReadLine();
+                        Console.WriteLine("Тип деятельности: Т-тренер - 0, С-спортсмен - 1");
+                        types Types2 = (types)int.Parse(Console.ReadLine());
 
                         Console.WriteLine("Введите год рождения:");
                         int Age2 = int.Parse(Console.ReadLine());
@@ -122,16 +170,16 @@ namespace lab5
                     case "5":
                         Console.WriteLine("Введите тип поиска: ");
                         Console.WriteLine("1 - поиск по ФИО, \n2 - поиск по году рождения \n3 - по типу деятельности (Т-тренер, С-спортсмен)");
-                        string act = string.Empty;
-                        ArrayList list2 = new();
+                        string var = string.Empty;
+                        List<Item> list2 = new List<Item>();
                         switch (Console.ReadLine().Trim())
                         {
                             case "1":
                                 Console.WriteLine("Введите ФИО: ");
-                                act = Console.ReadLine();
+                                var = Console.ReadLine();
                                 foreach (Item item in list)
                                 {
-                                    if (item.Name.Equals(act))
+                                    if (item.Name.Equals(var))
                                         list2.Add(item);
                                 }
                                 Console.WriteLine(new String('-', 76));
@@ -149,10 +197,10 @@ namespace lab5
                                 break;
                             case "2":
                                 Console.WriteLine("Введите год рождения");
-                                int act2 = int.Parse(Console.ReadLine());
+                                int var2 = int.Parse(Console.ReadLine());
                                 foreach (Item item in list)
                                 {
-                                    if (item.Age.Equals(act2))
+                                    if (item.Age.Equals(var2))
                                         list2.Add(item);
                                 }
                                 Console.WriteLine(new String('-', 76));
@@ -169,11 +217,11 @@ namespace lab5
                                 Console.WriteLine(new String('-', 76));
                                 break;
                             case "3":
-                                Console.WriteLine("Введите тип деятельности");
-                                act = Console.ReadLine();
+                                Console.WriteLine("Введите тип деятельности: Т- тренер - 0, С - спортсмен - 1");
+                                types var3 = (types)int.Parse(Console.ReadLine());
                                 foreach (Item item in list)
                                 {
-                                    if (item.Type.Equals(act))
+                                    if (item.Type.Equals(var3))
                                         list2.Add(item);
                                 }
                                 Console.WriteLine(new String('-', 76));
@@ -192,7 +240,20 @@ namespace lab5
                         }
                         break;
                     case "6":
-                        //logs
+                        foreach (Action logs in list3)
+                        {
+                            logs.Print();                            
+                        }
+                        TimeSpan varr = list3[1].Time - list3[0].Time;
+                       for (int i = 2; i< list3.Count; i++)
+                        {
+                            TimeSpan varr2 = list3[i].Time - list3[i - 1].Time;
+                            if(varr2 > varr)
+                            {
+                                varr = varr2;
+                            }
+                        }
+                        Console.WriteLine($"Наибольшее время простоя: {varr}");                        
                         break;
                     case "7":
                         flag = false;
