@@ -253,6 +253,7 @@ namespace lab5
                                 varr = varr2;
                             }
                         }
+                        Console.WriteLine();
                         Console.WriteLine($"Наибольшее время простоя: {varr}");                        
                         break;
                     case "7":
