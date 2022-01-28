@@ -244,7 +244,7 @@ namespace lab5
                         {
                             logs.Print();                            
                         }
-                        TimeSpan varr = list3[1].Time - list3[0].Time;
+                        TimeSpan varr = list3[1].Time - list3[0].Time;                                                                                                                        
                        for (int i = 2; i< list3.Count; i++)
                         {
                             TimeSpan varr2 = list3[i].Time - list3[i - 1].Time;
@@ -254,7 +254,7 @@ namespace lab5
                             }
                         }
                         Console.WriteLine();
-                        Console.WriteLine($"Наибольшее время простоя: {varr}");                        
+                        Console.WriteLine($"{varr} - Самый долгий период бездействия пользователя");                        
                         break;
                     case "7":
                         flag = false;
