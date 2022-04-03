@@ -28,6 +28,7 @@ namespace Zadanie_2
                 }               
             }
             foo();
+            Console.WriteLine();
         }
 
         static void foo()
@@ -38,7 +39,7 @@ namespace Zadanie_2
             {
                 using (BinaryWriter bw = new BinaryWriter(File.Open(filename2, FileMode.OpenOrCreate)))
                 {                                           
-                        br.BaseStream.Position += 3;
+                        br.BaseStream.Position += 6;
                         bw.Write(br.ReadDouble());                                                               
                 }
             }

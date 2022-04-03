@@ -274,15 +274,27 @@ namespace lab5
                         list3.Add(val);                      
                         break;                       
                     case "3":
-                        Console.WriteLine("Введите номер записи которую хотите удалить:");
-                        Console.WriteLine("Кол-во записей: " + list.Count);
-                        int num = int.Parse(Console.ReadLine());
-                        while (num > list.Count)
+                        int num;
+                        Console.WriteLine("Введите номер записи которую хотите удалить:");                                                   
+                        for (; ; )
                         {
-                            Console.WriteLine("Введено неверное значение");
-                            Console.WriteLine("Введите номер записи которую хотите удалить:");
-                            Console.WriteLine("Кол-во записей: " + list.Count);
-                            num = int.Parse(Console.ReadLine());
+                            try
+                            {
+                                Console.WriteLine("Кол-во записей: " + list.Count);
+                                num = int.Parse(Console.ReadLine());
+                                if (num >= 0)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Некорректные данные, введите номер еще раз.");
+                                }
+                            }
+                            catch (FormatException)
+                            {
+                                Console.WriteLine("Некорректные данные, пожалуйста введите числовое значение!");
+                            }
                         }
                         time = DateTime.Now;
                         name = list[num - 1].Name;
@@ -293,15 +305,35 @@ namespace lab5
                         break;
                     case "4":
                         Console.WriteLine("Введите номер записи которую хотите обновить:");
-                        Console.WriteLine("Кол-во записей: " + list.Count);
-                        int num2 = int.Parse(Console.ReadLine());
-                        while (num2 > list.Count)
+                        
+                        int num2;
+                        for (; ; )
                         {
-                            Console.WriteLine("Введено неверное значение");
-                            Console.WriteLine("Введите номер записи которую хотите обновить:");
-                            Console.WriteLine("Кол-во записей: " + list.Count);
-                            num2 = int.Parse(Console.ReadLine());
+                            try
+                            {
+                                Console.WriteLine("Кол-во записей: " + list.Count);
+                                num2 = int.Parse(Console.ReadLine());
+                                if (num2 > 0 & num2 <= list.Count)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Некорректные данные, введите номер еще раз.");
+                                }
+                            }
+                            catch 
+                            {
+                                Console.WriteLine("Некорректные данные, пожалуйста введите числовое значение!");
+                            }
                         }
+                        //while (num2 > list.Count)
+                        //{
+                        //    Console.WriteLine("Введено неверное значение");
+                        //    Console.WriteLine("Введите номер записи которую хотите обновить:");
+                        //    Console.WriteLine("Кол-во записей: " + list.Count);
+                        //    num2 = int.Parse(Console.ReadLine());
+                        //}
                         time = DateTime.Now;
                         name = list[num2 - 1].Name;
                         act = actions.upd;
