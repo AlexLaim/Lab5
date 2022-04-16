@@ -15,7 +15,7 @@ namespace Zadanie_5
             bool flag = true;
             while (flag)
             {
-                Console.WriteLine("Введите диск на котором лежит файл: D или C (если файл находится на том же диске, что и приложение, введите +)");
+                Console.WriteLine("Введите диск на котором лежит файл: D или C (если файл находится в той же папке, что и приложение, введите +)");
                 string act = Console.ReadLine();
                 switch (act)
                 {
