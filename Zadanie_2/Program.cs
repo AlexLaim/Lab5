@@ -1,49 +1,83 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Zadanie_2
 {
     class Program
     {
-       
-    
-        static void Main(string[] args)
+
+        public struct Action
         {
-            //ВАРИАНТ 7
-            Console.WriteLine("Программа начала работу");
-            
-            
-            string filename = Directory.GetCurrentDirectory() + "\\file1.dat";
-            using (BinaryWriter bw = new BinaryWriter(File.Open(filename, FileMode.OpenOrCreate)))
+            public Action(int M, int N, double MN)
             {
-                for (int M = 1; M <= 5; M++)
-                {
-                    for (int N = 1; N <= 5; N++)
-                    {
-                        bw.Write(M);
-                        bw.Write(N);
-                        bw.Write(Math.Pow(M, N));
-                        
-                    }
-                }               
+                this.M = M;
+                this.N = N;
+                this.MN = MN;
             }
-            foo();
-            Console.WriteLine();
+            public int M;
+            public int N;
+            public double MN;
         }
 
-        static void foo()
-        {   
-            string filename1 = Directory.GetCurrentDirectory() + "\\file1.dat";
-            string filename2 = Directory.GetCurrentDirectory() + "\\file2.dat";
-            using (BinaryReader br = new BinaryReader(File.Open(filename1, FileMode.Open)))
+        static void Main(string[] args)
+        {
+            //ВАРИАНТ 7           
+            List<double> thirdnumber = new List<double>();
+            List<Action> allnumber = new List<Action>();
+
+            for (int M = 1; M <= 5; M++)
             {
-                using (BinaryWriter bw = new BinaryWriter(File.Open(filename2, FileMode.OpenOrCreate)))
-                {                                           
-                        br.BaseStream.Position += 6;
-                        bw.Write(br.ReadDouble());                                                               
+                for (int N = 1; N <= 5; N++)
+                {
+                    double MN = Math.Pow(M, N);                   
+                    allnumber.Add(new Action(M, N, Math.Pow(M, N)));
                 }
             }
-            Console.WriteLine("Программа отработала без ошибок");
+
+            for (int i = 0; i < allnumber.Count; i++)
+            {
+                Console.WriteLine(allnumber[i].M + "\t" + allnumber[i].N + "\t" + allnumber[i].MN);
+            }
+            
+            writer1(allnumber);
+            reader2(thirdnumber);
+            writer2(thirdnumber);           
+        }
+        static string filename1 = Directory.GetCurrentDirectory() + "\\file1.dat";
+        static string filename2 = Directory.GetCurrentDirectory() + "\\file2.dat";
+        static void writer1(List<Action> allnumber)
+        {
+   
+            for(int i = 0; i < allnumber.Count; i++)
+            using (BinaryWriter writer = new BinaryWriter(File.Open(filename1, FileMode.Append)))
+            {
+                    writer.Write($"{allnumber[i].M} {allnumber[i].N} {allnumber[i].MN}");
+            }
+        }
+
+        static void reader2(List<double> thirdnumber)
+        {
+            using (BinaryReader br = new BinaryReader(File.Open(filename1, FileMode.Open)))
+            {
+                while (br.PeekChar() > -1)
+                {
+                    string[] entryStrings = br.ReadString().Split();
+                    thirdnumber.Add(Double.Parse(entryStrings[2]));
+                }
+            }
+        }
+
+        static void writer2(List<double> thirdnumber)
+        {
+            using (BinaryWriter bw = new BinaryWriter(File.Open(filename2, FileMode.OpenOrCreate)))
+            {
+                for (int i = 0; i < thirdnumber.Count; i++)
+                {
+                    bw.Write(thirdnumber[i]);
+                }
+            }
         }
     }
 }
+
