@@ -182,7 +182,7 @@ namespace lab5
                         //    }
 
                        // --->ПРОВЕРКА СТРОКИ, КОТОРАЯ СОСТОИТ ТОЛЬКО ИЗ БУКВ
-                            if (Regex.IsMatch(Name, @"^[a-zA-Z]+$"))
+                            if (Regex.IsMatch(Name, @"^([a-zA-Zа-яА-Я]+|\s)+$"))
                         {
                             
                                 break;
@@ -349,7 +349,7 @@ namespace lab5
                             Console.WriteLine("ФИО:");
                             Name2 = Console.ReadLine();
 
-                            if (Regex.IsMatch(Name2, @"^[a-zA-Z]+$"))
+                            if (Regex.IsMatch(Name2, @"^([a-zA-Zа-яА-Я]+|\s)+$"))
                             {
 
                                 break;
@@ -462,7 +462,7 @@ namespace lab5
                                     Console.WriteLine("Введите ФИО:");
                                     var = Console.ReadLine();
 
-                                    if (Regex.IsMatch(var, @"^[a-zA-Z]+$"))
+                                    if (Regex.IsMatch(var, @"^([a-zA-Zа-яА-Я]+|\s)+$"))
                                     {
 
                                         break;
